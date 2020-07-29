@@ -1,6 +1,6 @@
-from typing import List, Tuple, Optional
+from typing import List, Tuple
 import random
-import numpy as np
+import os
 
 Location = Tuple[int, int]
 Gameboard = List[List[str]]
@@ -16,7 +16,10 @@ class Board:
 
 
     def __getWordList(self):
-        with open('common_words.txt') as f:
+
+        current_loc = os.path.dirname(os.path.abspath(__file__))
+        filename = os.path.join(current_loc, 'common_words.txt')
+        with open(filename) as f:
             return f.read().splitlines()
 
     def __generateBoard(self) -> Gameboard:
