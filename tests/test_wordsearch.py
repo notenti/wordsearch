@@ -4,7 +4,7 @@ from wordsearch import search
 
 class TestWordSearch(unittest.TestCase):
     def test_find_all(self):
-        board = search.Board(200, 200)
+        board = search.Board(100, 100)
         ws = search.WordSearch(board)
 
         for word in board.placed_words:
