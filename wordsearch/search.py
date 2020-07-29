@@ -1,31 +1,22 @@
 from typing import List, Tuple
 import random
-import os
 
 Location = Tuple[int, int]
 Gameboard = List[List[str]]
 
 class Board:
-    def __init__(self, height, width) -> None:
+    def __init__(self, height: int, width: int, wordlist: List[str]) -> None:
         self.height = height
         self.width = width
+        self.wordlist = wordlist
         self.visited = [[False] * self.width for _ in range(self.height)]
-        self.common_words = self.__getWordList()
         self.placed_words = []
         self.board = self.__generateBoard()
-
-
-    def __getWordList(self):
-
-        current_loc = os.path.dirname(os.path.abspath(__file__))
-        filename = os.path.join(current_loc, 'common_words.txt')
-        with open(filename) as f:
-            return f.read().splitlines()
 
     def __generateBoard(self) -> Gameboard:
         # Words are ~5 letters long, can't be too dense
         max_num_words = self.height * self.width // 5
-        randomly_chosen_words = random.choices(self.common_words,
+        randomly_chosen_words = random.choices(self.wordlist,
                                                k=max_num_words)
 
         board = [[''] * self.width for _ in range(self.height)]
@@ -137,13 +128,4 @@ class WordSearch:
         self.visited[i][j] = False
         return exist
 
-
-if __name__ == '__main__':
-    b = Board(10, 10)
-
-    w = WordSearch(b)
-    for t in b.placed_words:
-        ahhh = w.search(t)
-        if ahhh:
-            print(f'Found {t}')
 
