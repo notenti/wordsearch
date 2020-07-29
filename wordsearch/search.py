@@ -4,6 +4,7 @@ import random
 Location = Tuple[int, int]
 Gameboard = List[List[str]]
 
+
 class Board:
     def __init__(self, height: int, width: int, wordlist: List[str]) -> None:
         self.height = height
@@ -14,16 +15,10 @@ class Board:
         self.board = self.__generateBoard()
 
     def __generateBoard(self) -> Gameboard:
-        # Words are ~5 letters long, can't be too dense
-        max_num_words = self.height * self.width // 5
-        randomly_chosen_words = random.choices(self.wordlist,
-                                               k=max_num_words)
 
         board = [[''] * self.width for _ in range(self.height)]
 
-        for word in randomly_chosen_words:
-            if "'" in word:
-                continue
+        for word in self.wordlist:
             open_spaces = self.__findWordLocation(word)
             if len(open_spaces) == len(word):
                 self.placed_words.append(word)
@@ -127,5 +122,3 @@ class WordSearch:
             self.__dfs(word, idx+1, i, j-1)
         self.visited[i][j] = False
         return exist
-
-
