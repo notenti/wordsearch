@@ -2,7 +2,6 @@ from typing import List, Tuple
 import random
 
 Location = Tuple[int, int]
-Gameboard = List[List[str]]
 
 
 class Board:
@@ -12,23 +11,23 @@ class Board:
         self.wordlist = wordlist
         self.visited = [[False] * self.width for _ in range(self.height)]
         self.placed_words = []
-        self.board = self.__generateBoard()
+        self.board = [[''] * self.width for _ in range(self.height)]
+        self.__populateBoard()
 
-    def __generateBoard(self) -> Gameboard:
-
-        board = [[''] * self.width for _ in range(self.height)]
-
+    def __populateBoard(self) -> None:
         for word in self.wordlist:
             open_spaces = self.__findWordLocation(word)
+
             if len(open_spaces) == len(word):
                 self.placed_words.append(word)
-            self.__placeOnBoard(open_spaces, word, board)
+
+            self.__placeOnBoard(open_spaces, word)
+
         alpha = 'thequickbrownfoxjumpsoverthelazydog'
         for i in range(self.height):
             for j in range(self.width):
-                if not board[i][j]:
-                    board[i][j] = random.choice(alpha)
-        return board
+                if not self.board[i][j]:
+                    self.board[i][j] = random.choice(alpha)
 
     def __findWordLocation(self, word: str) -> List[Location]:
         valid_loc = self.__generateValidStartLocation()
@@ -78,10 +77,10 @@ class Board:
             return True
         return False
 
-    def __placeOnBoard(self, spaces: List[Location], word: str, board: Gameboard) -> None:
+    def __placeOnBoard(self, spaces: List[Location], word: str) -> None:
         for idx, space in enumerate(spaces):
             i, j = space
-            board[i][j] = word[idx]
+            self.board[i][j] = word[idx]
 
     def __getitem__(self, index):
         return self.board[index]
